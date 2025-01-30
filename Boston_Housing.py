@@ -1,48 +1,44 @@
 
 import streamlit as st
 import pickle
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
+import gzip
 
-# Cargar el modelo entrenado
+# Función para cargar el modelo
 def load_model():
-    with open("model_trained_regressor.pkl", "rb") as file:
-        model = pickle.load(file)
+    with gzip.open('model_trained_regressor.pkl.gz', 'rb') as f:
+        model = pickle.load(f)
     return model
 
-# Definir las 13 características
-feature_names = [
-    "CRIM", "ZN", "INDUS", "CHAS", "NOX", "RM", "AGE", "DIS", "RAD", "TAX", "PTRATIO", "B", "LSTAT"
-]
-
+# Función principal
 def main():
-    st.title("Predicción del Precio de Casas - Boston Housing 🏡")
-    st.markdown("Ingrese las características de la casa para obtener el precio estimado.")
+    st.title("Predicción de Precios de Viviendas en Boston")
+    st.write("Introduce las características de la casa para predecir su precio.")
 
-    # Crear inputs para cada característica
-    inputs = {}
-    for feature in feature_names:
-        inputs[feature] = st.number_input(f"{feature}", value=0.0, format="%.4f")
-    
-    # Convertir a un array de numpy
-    input_data = np.array(list(inputs.values())).reshape(1, -1)
+    # Campos de entrada para las características
+    crim = st.number_input("Tasa de criminalidad per cápita por ciudad (CRIM)")
+    zn = st.number_input("Proporción de terreno residencial zonificado para lotes de más de 25,000 pies cuadrados (ZN)")
+    indus = st.number_input("Proporción de acres de negocios no minoristas por ciudad (INDUS)")
+    chas = st.number_input("Variable ficticia Charles River (1 si el tramo limita con el río; 0 en caso contrario) (CHAS)")
+    nox = st.number_input("Concentración de óxidos de nitrógeno (partes por 10 millones) (NOX)")
+    rm = st.number_input("Número promedio de habitaciones por vivienda (RM)")
+    age = st.number_input("Proporción de unidades ocupadas por el propietario construidas antes de 1940 (AGE)")
+    dis = st.number_input("Distancias ponderadas a cinco centros de empleo de Boston (DIS)")
+    rad = st.number_input("Índice de accesibilidad a autopistas radiales (RAD)")
+    tax = st.number_input("Tasa de impuesto sobre la propiedad de valor total por $10,000 (TAX)")
+    ptratio = st.number_input("Proporción alumno-maestro por ciudad (PTRATIO)")
+    b = st.number_input("1000(Bk - 0.63)^2 donde Bk es la proporción de personas de ascendencia afroamericana por ciudad (B)")
+    lstat = st.number_input("Porcentaje de población de estatus bajo (LSTAT)")
 
-    # Cargar modelo y predecir
-    if st.button("Predecir Precio 💰"):
+    # Botón para realizar la predicción
+    if st.button("Predecir Precio"):
         model = load_model()
-        prediction = model.predict(input_data)[0]
-        st.success(f"Precio estimado de la casa: ${prediction:,.2f}")
-    
-    # Agregar visualización interactiva
-    st.subheader("Distribución de Precios de las Casas")
-    df = pd.read_csv("boston_housing.csv")  # Asegúrate de tener este archivo
-    fig, ax = plt.subplots(figsize=(8, 5))
-    sns.histplot(df["MEDV"], bins=30, kde=True, color="blue")
-    ax.axvline(prediction, color='red', linestyle='dashed', linewidth=2, label='Predicción')
-    ax.legend()
-    st.pyplot(fig)
+        features = [[crim, zn, indus, chas, nox, rm, age, dis, rad, tax, ptratio, b, lstat]]
+        prediction = model.predict(features)
+        st.success(f"El precio predicho de la casa es: ${prediction[0]:,.2f}")
+
+        # Mostrar hiperparámetros del mejor modelo
+        st.write("Hiperparámetros del mejor modelo:")
+        st.write(model.get_params())
 
 if __name__ == "__main__":
     main()
