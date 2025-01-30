@@ -6,7 +6,7 @@ import gzip
 # Función para cargar el modelo
 def load_model():
     """Cargar el modelo y sus pesos desde el archivo model_weights.pkl."""
-    filename = ''model_trained_regressor.pkl.gz''
+    filename = 'model_trained_regressor.pkl.gz'
     with gzip.open(filename, 'rb') as f:
         model = pickle.load(f)
     return model
