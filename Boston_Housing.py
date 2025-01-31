@@ -2,7 +2,6 @@
 import streamlit as st
 import pickle
 import gzip
-import sklearn
 
 # Función para cargar el modelo
 def load_model():
@@ -38,13 +37,14 @@ def main():
     if st.button("Predecir Precio"):
         model = load_model()
         if model is not None:
+            # Crear un array 2D con los datos de entrada
             features = [[crim, zn, indus, chas, nox, rm, age, dis, rad, tax, ptratio, b, lstat]]
+            
+            # Realizar la predicción
             prediction = model.predict(features)
+            
+            # Mostrar el resultado
             st.success(f"El precio predicho de la casa es: ${prediction[0]:,.2f}")
-
-            # Mostrar hiperparámetros del mejor modelo
-            st.write("Hiperparámetros del mejor modelo:")
-            st.write(model.get_params())
 
 if __name__ == "__main__":
     main()
