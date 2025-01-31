@@ -2,6 +2,10 @@
 import streamlit as st
 import pickle
 import gzip
+import numpy as np
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.kernel_ridge import KernelRidge
 
 # Función para cargar el modelo
 def load_model():
@@ -45,6 +49,11 @@ def main():
             
             # Mostrar el resultado
             st.success(f"El precio predicho de la casa es: ${prediction[0]:,.2f}")
+
+            # Mostrar los hiperparámetros del mejor modelo
+            st.write("Hiperparámetros del mejor modelo:")
+            st.write("- alpha: 0.1")
+            st.write("- kernel: rbf")
 
 if __name__ == "__main__":
     main()
