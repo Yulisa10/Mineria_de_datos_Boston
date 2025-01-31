@@ -2,6 +2,7 @@
 import streamlit as st
 import pickle
 import gzip
+import sklearn
 
 # Función para cargar el modelo
 def load_model():
