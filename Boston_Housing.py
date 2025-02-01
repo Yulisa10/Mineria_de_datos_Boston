@@ -31,7 +31,7 @@ def main():
     """, unsafe_allow_html=True)
     
     # Imagen de una casa
-    st.image("house.jpg", use_column_width=True, caption="Ejemplo de Vivienda")
+    st.image("house.jpg", use_container_width=True, caption="Ejemplo de Vivienda")
     
     # Sección de entrada de datos con mejor visualización
     st.subheader("Características de la vivienda")
