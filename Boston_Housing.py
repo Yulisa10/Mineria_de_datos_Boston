@@ -76,6 +76,14 @@ def main():
                 - Pipeline: StandardScaler + KernelRidge(alpha=0.1, kernel='rbf')
                 - MAE más bajo: 2.6156 🎯
             """)
+    
+    # Pie de página con el nombre del creador
+    st.markdown("""
+        <hr>
+        <p style='text-align: center; font-size:16px; color: #7D7D7D;'>
+        Página creada por <strong>Yulisa Ortiz Giraldo</strong>
+        </p>
+    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
