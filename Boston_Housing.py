@@ -60,10 +60,23 @@ def main():
             st.success(f"💰 El precio predicho de la casa es: ${prediction[0]:,.2f}")
             
             st.info("""
-                **Hiperparámetros del modelo:**
+                **Hiperparámetros del mejor modelo:**
                 - 🔹 alpha: 0.1  
                 - 🔹 kernel: rbf
+                
+                **Evaluación de Modelos:**
+                - ElasticNet con StandardScaler -> MAE: 3.4372 | Parámetros: {'reg__alpha': 0.1, 'reg__l1_ratio': 0.1}
+                - KernelRidge con StandardScaler -> MAE: 2.6156 | Parámetros: {'reg__alpha': 0.1, 'reg__kernel': 'rbf'} ✅
+                - ElasticNet con MinMaxScaler -> MAE: 3.4694 | Parámetros: {'reg__alpha': 0.1, 'reg__l1_ratio': 1.0}
+                - KernelRidge con MinMaxScaler -> MAE: 2.8787 | Parámetros: {'reg__alpha': 0.1, 'reg__kernel': 'poly'}
+                - ElasticNet sin escalado -> MAE: 3.5148 | Parámetros: {'reg__alpha': 0.1, 'reg__l1_ratio': 1.0}
+                - KernelRidge sin escalado -> MAE: 3.5921 | Parámetros: {'reg__alpha': 1.0, 'reg__kernel': 'linear'}
+                
+                **📌 Mejor Modelo:** KernelRidge con StandardScaler
+                - Pipeline: StandardScaler + KernelRidge(alpha=0.1, kernel='rbf')
+                - MAE más bajo: 2.6156 🎯
             """)
 
 if __name__ == "__main__":
     main()
+
